@@ -1,0 +1,6 @@
+# ШАБЛОН. Скопируй в targets/<bot>.yml (без .disabled) и поправь.
+- targets: ["127.0.0.1:9092"]
+  labels:
+    bot: my-bot
+    project: my-project
+    env: prod

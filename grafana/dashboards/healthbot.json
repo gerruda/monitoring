@@ -1,0 +1,37 @@
+{
+  "uid": "healthbot",
+  "title": "healthbot",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {"from": "now-6h", "to": "now"},
+  "templating": {"list": []},
+  "panels": [
+    {"type": "stat", "title": "Uptime / последнее обновление", "gridPos": {"x":0,"y":0,"w":6,"h":4},
+     "targets": [{"expr": "time() - healthbot_last_update_timestamp_seconds", "legendFormat": "секунд с update"}]},
+    {"type": "stat", "title": "Очередь webhook", "gridPos": {"x":6,"y":0,"w":6,"h":4},
+     "targets": [{"expr": "healthbot_webhook_queue_length", "legendFormat": "в очереди"}]},
+    {"type": "stat", "title": "Ошибки LLM за 5м", "gridPos": {"x":12,"y":0,"w":6,"h":4},
+     "targets": [{"expr": "sum(rate(healthbot_llm_requests_total{status=\"error\"}[5m]))", "legendFormat": "ошибок/с"}]},
+    {"type": "stat", "title": "Токены за 5м", "gridPos": {"x":18,"y":0,"w":6,"h":4},
+     "targets": [{"expr": "sum(rate(healthbot_llm_tokens_total{direction=\"total\"}[5m]))", "legendFormat": "токенов/с"}]},
+
+    {"type": "timeseries", "title": "Updates по командам", "gridPos": {"x":0,"y":4,"w":12,"h":8},
+     "targets": [{"expr": "sum by (command) (rate(healthbot_updates_total[5m]))", "legendFormat": "{{command}}"}]},
+    {"type": "timeseries", "title": "Длительность update p95", "gridPos": {"x":12,"y":4,"w":12,"h":8},
+     "targets": [{"expr": "histogram_quantile(0.95, sum by (le,command) (rate(healthbot_update_duration_seconds_bucket[5m])))", "legendFormat": "{{command}}"}]},
+
+    {"type": "timeseries", "title": "LLM latency p95", "gridPos": {"x":0,"y":12,"w":12,"h":8},
+     "targets": [{"expr": "histogram_quantile(0.95, sum by (le,provider,model,kind) (rate(healthbot_llm_request_duration_seconds_bucket[5m])))", "legendFormat": "{{provider}}/{{model}}/{{kind}}"}]},
+    {"type": "timeseries", "title": "Токены/с по моделям", "gridPos": {"x":12,"y":12,"w":12,"h":8},
+     "targets": [{"expr": "sum by (provider,model) (rate(healthbot_llm_tokens_total{direction=\"total\"}[5m]))", "legendFormat": "{{provider}}/{{model}}"}]},
+
+    {"type": "timeseries", "title": "Ошибки по компонентам", "gridPos": {"x":0,"y":20,"w":12,"h":8},
+     "targets": [{"expr": "sum by (component) (rate(healthbot_errors_total[5m]))", "legendFormat": "{{component}}"}]},
+    {"type": "timeseries", "title": "Память / горутины", "gridPos": {"x":12,"y":20,"w":12,"h":8},
+     "targets": [
+       {"expr": "process_resident_memory_bytes", "legendFormat": "RSS"},
+       {"expr": "go_goroutines", "legendFormat": "goroutines"}
+     ]}
+  ]
+}

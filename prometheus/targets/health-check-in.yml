@@ -1,0 +1,6 @@
+# health-check-in: отдельный metrics-listener (METRICS_LISTEN=127.0.0.1:9090).
+- targets: ["127.0.0.1:9090"]
+  labels:
+    bot: health-check-in
+    project: health
+    env: prod

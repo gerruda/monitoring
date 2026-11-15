@@ -1,0 +1,7 @@
+# volna: HTTP-сервер на 8080 (webhooks + /metrics).
+# Если /metrics закрыт фаерволом/прокси — оставь только доступ для 127.0.0.1.
+- targets: ["127.0.0.1:8080"]
+  labels:
+    bot: volna
+    project: volna
+    env: prod

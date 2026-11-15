@@ -20,7 +20,7 @@
 ### 1. Скопировать репозиторий на VPS
 
 ```bash
-rsync -a --exclude .git /home/flash/work/bots/monitoring/ user@VPS:/opt/monitoring/
+rsync -a --exclude .git . user@VPS:/opt/monitoring/   # из каталога репозитория
 # или git clone, если репозиторий в git
 ```
 

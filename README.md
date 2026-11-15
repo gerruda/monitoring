@@ -28,7 +28,7 @@ Prometheus и Grafana работают в `network_mode: host` и слушают
 ## Быстрый старт
 
 ```bash
-cd /home/flash/work/bots/monitoring        # на VPS: /opt/monitoring
+cd monitoring                              # локально; на VPS: /opt/monitoring
 cp .env.example .env                       # задай GRAFANA_ADMIN_PASSWORD
 make up                                    # docker compose up -d
 make verify                                # /-/ready и /api/health

@@ -203,6 +203,19 @@ Termux:Boot выполняет скрипт только если Termux хот�
 Либо `termux-services` — оберни `start-*.sh` в `$PREFIX/var/service/<name>/run`
 (тогда не нужен `nohup`, runit сам держит процесс).
 
+## Если Termux:Boot не запускает скрипты (MIUI 12 / Android 10)
+
+Известная проблема: [termux/termux-boot#175](https://github.com/termux/termux-boot/issues/175) —
+именно на MIUI 12 / Android 10 (Redmi) скрипты из `~/.termux/boot/` не выполняются.
+Обходные пути по порядку:
+
+1. Запустить приложение **Termux:Boot один раз** (иконка в лаунчере) — Android не
+   отправляет `BOOT_COMPLETED` приложениям, которые ни разу не запускались.
+2. Включить в MIUI **«Автозапуск»** и **«Background Autostart»** для Termux и
+   Termux:Boot, батарею — «Без ограничений».
+3. Если не помогло — ручной подъём: `~/up.sh` (см. `deploy/termux/up.sh`).
+   Для always-on устройства, которое перезагружается редко, это нормальный вариант.
+
 ## Память (4 ГБ, Android)
 
 | Компонент | ОЗУ |

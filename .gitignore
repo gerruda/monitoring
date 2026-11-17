@@ -1,2 +1,4 @@
 .env
 data/
+# адреса конкретного хоста (LAN-IP, локальные порты)
+prometheus/targets.local/

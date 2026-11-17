@@ -1,0 +1,19 @@
+# Шаблон для Termux: __REPO__ подставляется start-prometheus.sh.
+# Логика та же, что в ../prometheus.yml (Docker): file_sd + self-scrape.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "bots"
+    metrics_path: /metrics
+    file_sd_configs:
+      - files:
+          - __REPO__/prometheus/targets/*.yml          # общие (как на VPS)
+          - __REPO__/prometheus/targets.local/*.yml    # адреса этого хоста (gitignored)
+        refresh_interval: 30s
+
+  # Сам Prometheus — чтобы в Grafana были up/process-метрики.
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["127.0.0.1:9091"]

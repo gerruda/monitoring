@@ -194,8 +194,8 @@ cp deploy/termux/boot.sh ~/.termux/boot/monitoring.sh
 chmod +x ~/.termux/boot/monitoring.sh
 ```
 
-Что поднимается после перезагрузки: туннели (если есть `tunnels.env`) →
-Prometheus → Grafana. Данные Prometheus/Grafana лежат в `~/.monitoring/data`,
+Что поднимается после перезагрузки: **sshd** → туннели (если есть `tunnels.env`)
+→ Prometheus → Grafana. Данные Prometheus/Grafana лежат в `~/.monitoring/data`,
 поэтому история и пароль администратора переживают перезагрузку.
 Termux:Boot выполняет скрипт только если Termux хотя бы раз запускали после
 установки Termux:Boot и в MIUI включён автозапуск + «Без ограничений».

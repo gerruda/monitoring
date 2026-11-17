@@ -3,6 +3,13 @@
 # Установить: cp deploy/termux/boot.sh ~/.termux/boot/monitoring.sh && chmod +x ~/.termux/boot/monitoring.sh
 # Требуется Termux:Boot (F-Droid) и включённый автозапуск для Termux в MIUI.
 termux-wake-lock
+
+# SSH первым делом: без него после перезагрузки не зайти удалённо,
+# если что-то из сервисов не поднялось.
+if command -v sshd >/dev/null 2>&1; then
+  pgrep -f "bin/sshd" >/dev/null 2>&1 || sshd
+fi
+
 cd "$HOME/monitoring" || exit 1
 
 # Пароль Grafana и прочие переменные окружения (файл вне git):

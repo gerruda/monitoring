@@ -5,6 +5,13 @@
 termux-wake-lock
 cd "$HOME/monitoring" || exit 1
 
+# Пароль Grafana и прочие переменные окружения (файл вне git):
+#   echo "GRAFANA_ADMIN_PASSWORD=..." > ~/.monitoring/env
+if [ -f "$HOME/.monitoring/env" ]; then
+  . "$HOME/.monitoring/env"
+  export GRAFANA_ADMIN_PASSWORD
+fi
+
 # Туннели к VPS (если настроены) — до Prometheus, чтобы цели успели подняться
 if [ -f "$HOME/.monitoring/tunnels.env" ]; then
   nohup bash deploy/termux/start-tunnels.sh >> "$HOME/.monitoring/logs/tunnels.log" 2>&1 &

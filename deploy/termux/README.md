@@ -182,10 +182,20 @@ curl -fsS http://127.0.0.1:9090/metrics | head    # health-check-in через �
 Termux в MIUI):
 
 ```bash
+# пароль Grafana для автозапуска (файл вне git)
+echo "GRAFANA_ADMIN_PASSWORD=свой-пароль" > ~/.monitoring/env
+chmod 600 ~/.monitoring/env
+
 mkdir -p ~/.termux/boot
 cp deploy/termux/boot.sh ~/.termux/boot/monitoring.sh
 chmod +x ~/.termux/boot/monitoring.sh
 ```
+
+Что поднимается после перезагрузки: туннели (если есть `tunnels.env`) →
+Prometheus → Grafana. Данные Prometheus/Grafana лежат в `~/.monitoring/data`,
+поэтому история и пароль администратора переживают перезагрузку.
+Termux:Boot выполняет скрипт только если Termux хотя бы раз запускали после
+установки Termux:Boot и в MIUI включён автозапуск + «Без ограничений».
 
 Либо `termux-services` — оберни `start-*.sh` в `$PREFIX/var/service/<name>/run`
 (тогда не нужен `nohup`, runit сам держит процесс).

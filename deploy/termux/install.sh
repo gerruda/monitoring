@@ -26,19 +26,19 @@ mkdir -p "$DATA/bin" "$DATA/data/prometheus" "$DATA/data/grafana" \
 cd "$DATA/tmp"
 
 if [ -x "$DATA/bin/prometheus" ]; then
-  echo "Prometheus уже установлен: $("$DATA/bin/prometheus" --version 2>&1 | head -1)"
+  echo "Prometheus уже установлен: $("$DATA/bin/prometheus" --version 2>&1 | sed -n '1p')"
 else
   echo "==> Prometheus $PROM_VER"
   url="https://github.com/prometheus/prometheus/releases/download/v${PROM_VER}/prometheus-${PROM_VER}.linux-arm64.tar.gz"
   curl -fL --retry 3 -o prom.tar.gz "$url"
-  dir="$(tar tzf prom.tar.gz | head -1 | cut -d/ -f1)"
+  dir="$(tar tzf prom.tar.gz | sed -n '1s|/.*$||p')"
   tar xzf prom.tar.gz
   cp -f "$dir/prometheus" "$DATA/bin/prometheus"; chmod 755 "$DATA/bin/prometheus"
   cp -f "$dir/promtool"   "$DATA/bin/promtool"   2>/dev/null && chmod 755 "$DATA/bin/promtool" || true
   mkdir -p "$DATA/bin/consoles" "$DATA/bin/console_libraries"
   cp -r "$dir/consoles/." "$DATA/bin/consoles/" 2>/dev/null || true
   cp -r "$dir/console_libraries/." "$DATA/bin/console_libraries/" 2>/dev/null || true
-  echo "OK: $("$DATA/bin/prometheus" --version 2>&1 | head -1)"
+  echo "OK: $("$DATA/bin/prometheus" --version 2>&1 | sed -n '1p')"
 fi
 
 if [ -x "$DATA/bin/grafana" ]; then
@@ -47,13 +47,13 @@ else
   echo "==> Grafana $GRAFANA_VER"
   url="https://dl.grafana.com/oss/release/grafana-${GRAFANA_VER}.linux-arm64.tar.gz"
   curl -fL --retry 3 -o grafana.tar.gz "$url"
-  dir="$(tar tzf grafana.tar.gz | head -1 | cut -d/ -f1)"
+  dir="$(tar tzf grafana.tar.gz | sed -n '1s|/.*$||p')"
   tar xzf grafana.tar.gz
   rm -rf "$DATA/grafana-dist"
   mv "$dir" "$DATA/grafana-dist"
   ln -sf "$DATA/grafana-dist/bin/grafana" "$DATA/bin/grafana"
   ln -sf "$DATA/grafana-dist/bin/grafana-server" "$DATA/bin/grafana-server" 2>/dev/null || true
-  echo "OK: $("$DATA/bin/grafana" --version 2>&1 | head -1)"
+  echo "OK: $("$DATA/bin/grafana" --version 2>&1 | sed -n '1p')"
 fi
 
 rm -rf "$DATA/tmp"
